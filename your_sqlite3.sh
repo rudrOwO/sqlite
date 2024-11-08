@@ -7,5 +7,5 @@
 # DON'T EDIT THIS!
 set -e
 tmpFile=$(mktemp)
-go build -o "$tmpFile" $(dirname "$0")/app/*.go
+go build -o "$tmpFile" $(dirname "$0")/cmd/sqlite/main.go
 exec "$tmpFile" "$@"

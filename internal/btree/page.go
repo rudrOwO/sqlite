@@ -4,7 +4,7 @@ package btree
 import (
 	"encoding/binary"
 
-	u "github/com/codecrafters-io/sqlite-starter-go/app/utils"
+	u "github.com/rudrowo/sqlite/internal/utils"
 )
 
 const (
@@ -18,44 +18,44 @@ const (
 	LEAF_TABLE_PAGE_TYPE     = 0x0d
 )
 
-type LeafHeader struct {
-	PageType   uint8
-	CellsCount uint16
-}
-
-type interiorHeader struct {
-	LeafHeader
-	rightmostPointer uint32
-}
+type (
+	LeafHeader struct {
+		PageType   uint8
+		CellsCount uint16
+	}
+	interiorHeader struct {
+		LeafHeader
+		rightmostPointer uint32
+	}
+)
 
 type interiorTableCell struct {
 	leftChildPointer uint32
 	rowId            uint64
 }
 
-// A Page here is a Node in the B-Tree.
-type interiorTablePage struct {
-	header       interiorHeader
-	cellPointers []uint16
-	cells        []interiorTableCell
-}
+type (
+	interiorTablePage struct {
+		header       interiorHeader
+		cellPointers []uint16
+		cells        []interiorTableCell
+	}
+	LeafTablePage struct {
+		Header       LeafHeader
+		CellPointers []uint16
+		// TODO Add Leaf Cells later
+	}
+)
 
-type LeafTablePage struct {
-	Header       LeafHeader
-	CellPointers []uint16
-	// TODO Add Leaf Cells later
-}
-
-func (l *LeafTablePage) loadPageFromBuffer(fileBuffer []byte) {
+func (l *LeafTablePage) loadFromBuffer(fileBuffer []byte) {
 	l.Header.PageType = fileBuffer[0]
 	// Bytes ignored => [1:3]
 	l.Header.CellsCount = binary.BigEndian.Uint16(fileBuffer[3:5])
 
 	// TODO load Cells
-
 }
 
-func (l *interiorTablePage) loadPageFromBuffer(fileBuffer []byte) {
+func (l *interiorTablePage) loadFromBuffer(fileBuffer []byte) {
 	l.header.PageType = fileBuffer[0]
 	// Bytes ignored => [1:3]
 	l.header.CellsCount = binary.BigEndian.Uint16(fileBuffer[3:5])

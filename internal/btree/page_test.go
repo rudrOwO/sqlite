@@ -23,6 +23,6 @@ func TestLoadPage(t *testing.T) {
 	}
 
 	l := new(interiorTablePage)
-	l.loadPageFromBuffer(fileBuffer)
+	l.loadFromBuffer(fileBuffer)
 	t.Logf("\n%+v\n", *l)
 }

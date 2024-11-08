@@ -1,13 +1,10 @@
 package features
 
 import (
-	"os"
-
-	btree "github/com/codecrafters-io/sqlite-starter-go/app/btree"
+	btree "github.com/rudrowo/sqlite/internal/btree"
 )
 
-func CountRows(tableName string, dbFile *os.File) uint16 {
-	leafPagesChannel := make(chan btree.LeafTablePage, 1)
+func CountRows(tableName string) uint16 {
 	go btree.LoadAllLeafTablePages(tableName, dbFile, leafPagesChannel)
 
 	cellsCount := uint16(0)

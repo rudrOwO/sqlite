@@ -3,8 +3,6 @@ package btree
 
 import (
 	"encoding/binary"
-
-	u "github.com/rudrowo/sqlite/internal/utils"
 )
 
 const (
@@ -71,9 +69,12 @@ func (l *interiorTablePage) loadFromBuffer(fileBuffer []byte) {
 		{
 			ci := l.cellPointers[i]
 			l.cells[i].leftChildPointer = binary.BigEndian.Uint32(fileBuffer[ci : ci+4])
-			l.cells[i].rowId, _ = u.ReadVarInt(fileBuffer[ci+4:])
+			l.cells[i].rowId, _ = readVarInt(fileBuffer[ci+4:])
 		}
 		i += 1
 		j += 2
 	}
 }
+
+// TODO
+func readAllColumns() {}

@@ -1,9 +1,8 @@
 package btree
 
 import (
+	"log"
 	"os"
-
-	u "github.com/rudrowo/sqlite/internal/utils"
 )
 
 /*
@@ -27,9 +26,13 @@ func getRootPageOffset(tableName string) int64 {
 func loadAllLeafTablePages(rootPageOffset int64, dbFile *os.File, leafTablesChannel chan<- LeafTablePage) {
 	fileBuffer := make([]byte, PAGE_SIZE)
 	_, err := dbFile.Seek(rootPageOffset, 0)
-	u.HandleError(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 	_, err = dbFile.Read(fileBuffer)
-	u.HandleError(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	if fileBuffer[0] == LEAF_TABLE_PAGE_TYPE {
 		leafPage := new(LeafTablePage)

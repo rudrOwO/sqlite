@@ -1,8 +1,6 @@
-package utils
+package btree
 
-import "log"
-
-func ReadVarInt(buf []byte) (uint64, int) {
+func readVarInt(buf []byte) (uint64, int) {
 	var result uint64
 	for i, b := range buf {
 		result <<= 7
@@ -14,16 +12,10 @@ func ReadVarInt(buf []byte) (uint64, int) {
 	return result, 0
 }
 
-func BytesToInt(bytes []byte) uint64 {
+func bytesToInt(bytes []byte) uint64 {
 	var result uint64
 	for _, b := range bytes {
 		result = (result << 8) | uint64(b)
 	}
 	return result
-}
-
-func HandleError(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
 }
